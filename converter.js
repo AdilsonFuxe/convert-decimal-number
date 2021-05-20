@@ -15,7 +15,7 @@ const convertToExt = (number = 0, lang = 'pt') => {
   if (typeof Number(number) === 'number') {
     let numberLang = chooseLanguage[lang];
 
-    if (number >= 0 && number < 20) return numberLang[number];
+    if (numberLang[number]) return numberLang[number];
     if (number < 100) {
       const rest = number % 10;
       const numberMinusRest = number - rest;
@@ -52,6 +52,6 @@ const convertToExt = (number = 0, lang = 'pt') => {
     : `${number} is not a number.`;
 };
 
-console.log(convertToExt(1000, 'pt'));
+console.log(convertToExt(1001, 'pt'));
 
 module.exports = convertToExt;
