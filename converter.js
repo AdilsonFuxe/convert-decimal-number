@@ -13,13 +13,7 @@ const chooseLanguage = {
 
 const convertToExt = (number = 0, lang = 'pt') => {
   if (typeof Number(number) === 'number') {
-    let numberLang = {};
-
-    if (lang === 'pt') {
-      numberLang = chooseLanguage[language.portuguese];
-    } else if (lang === 'en') {
-      numberLang = chooseLanguage[language.english];
-    }
+    let numberLang = chooseLanguage[lang];
 
     if (number >= 0 && number < 20) return numberLang[number];
     if (number < 100) {
