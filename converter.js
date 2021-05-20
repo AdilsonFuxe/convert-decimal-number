@@ -11,15 +11,9 @@ const chooseLanguage = {
   en: enNumbers,
 };
 
-const convertToExt = (number = 0, lang = 'pt') => {
+const convertToExt = (number = 0, lang) => {
   if (typeof Number(number) === 'number') {
-    let numberLang = {};
-
-    if (lang === 'pt') {
-      numberLang = chooseLanguage[language.portuguese];
-    } else if (lang === 'en') {
-      numberLang = chooseLanguage[language.english];
-    }
+    let numberLang = chooseLanguage[lang];
 
     if (number >= 0 && number < 20) return numberLang[number];
     if (number < 100) {
@@ -58,6 +52,6 @@ const convertToExt = (number = 0, lang = 'pt') => {
     : `${number} is not a number.`;
 };
 
-console.log(convertToExt(1000, 'pt'));
+console.log(convertToExt(100, 'pt'));
 
 module.exports = convertToExt;
