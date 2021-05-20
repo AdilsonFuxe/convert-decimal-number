@@ -1,5 +1,5 @@
 const converter = require('../converter');
-const ptNumbers = require('../pt-numbers.json');
+const ptNumbers = require('../lang/pt-numbers.json');
 
 describe('convert an number', () => {
   it('return a correct value on success', () => {
