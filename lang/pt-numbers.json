@@ -36,7 +36,5 @@
   "700": "Setecentos",
   "800": "Oitocentos",
   "900": "Novecentos",
-  "0000": "Mil",
-  "000000": "Milhão",
-  "+000000": "Milhões"
+  "1000000": "Um Milhão"
 }

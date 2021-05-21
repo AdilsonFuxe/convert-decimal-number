@@ -6,67 +6,45 @@ const chooseLanguage = {
   en: enNumbers,
 };
 
-const NO_SOLUCTION = '--';
+const setNumber = (number) => {
+  let num = 0;
 
-const getE = (lang) => (lang === 'pt' ? ' e ' : ' ');
+  if (number < 100) {
+    num = 10;
+  } else if (number < 1000) {
+    num = 100;
+  } else if (number < 10000) {
+    num = 1000;
+  } else if (number < 100000) {
+    num = 10000;
+  } else if (number < 1000000) {
+    num = 100000;
+  } else if (number < 10000000) {
+    num = 1000000;
+  } else if (number < 100000000) {
+    num = 10000000;
+  }
+
+  return num;
+};
 
 const convertToLiteral = (number, lang) => {
+  let divider;
+  let res = 0;
+
   if (lang !== 'pt' && lang !== 'en')
     throw new Error('This language is not supported yet');
   if (typeof number !== 'number') throw new Error('You must provide a number');
 
   const words = chooseLanguage[lang];
 
-  if (number <= 20) return words[number].toLowerCase();
-
-  if (number <= 99) {
-    const firstDigit = Math.trunc(number / 10);
-    const rest = convertToLiteral(number % 10, lang);
-
-    return `${words[firstDigit + '0'].toLowerCase()}${
-      rest !== words['0'].toLowerCase() ? `${getE(lang)}${rest}` : ''
-    }`;
+  if (words[number]) {
+    return words[number];
   }
 
-  if (number % 100 === 0 && number % 1000 !== 0)
-    return words[number].toLowerCase();
-
-  if (number <= 999) {
-    const firstDigit = Math.trunc(number / 100);
-    const rest = convertToLiteral(number % 100, lang);
-
-    return `${words[firstDigit + '00'].toLowerCase()}${
-      rest !== words['0'].toLowerCase() ? `${getE(lang)}${rest}` : ''
-    }`;
-  }
-
-  if (number <= 999999) {
-    const firstDigit = Math.trunc(number / 1000);
-    const rest = convertToLiteral(number % 1000, lang);
-
-    return `${
-      firstDigit === 1
-        ? words['0000'].toLowerCase()
-        : `${convertToLiteral(firstDigit, lang)} ${words['0000'].toLowerCase()}`
-    }${rest !== words['0'].toLowerCase() ? `${getE(lang)}${rest}` : ''}`;
-  }
-
-  if (number <= 999999999) {
-    const firstDigit = Math.trunc(number / 1000000);
-    const rest = convertToLiteral(number % 1000000, lang);
-
-    return `${
-      firstDigit === 1
-        ? words['000000'].toLowerCase()
-        : `${convertToLiteral(firstDigit, lang)} ${words[
-            `${firstDigit === 1 ? '' : '+'}000000`
-          ].toLowerCase()}`
-    }${rest !== words['0'].toLowerCase() ? `${getE(lang)}${rest}` : ''}`;
-  }
-
-  return NO_SOLUCTION;
+  divider = setNumber(number);
+  res = parseInt(number / divider) * divider;
+  return `${words[res]} and ${convertToLiteral(number % divider, lang)}`;
 };
-
-console.log(convertToLiteral(23647234, 'pt'));
 
 module.exports = convertToLiteral;
