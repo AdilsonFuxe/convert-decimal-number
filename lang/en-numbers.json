@@ -28,6 +28,15 @@
   "80": "Eighty",
   "90": "Ninety",
   "100": "Hundred",
-  "1000": "Thousand",
-  "1000000": "Million"
+  "200": "Two Hundred",
+  "300": "Three Hundred",
+  "400": "Four Hundred",
+  "500": "Five Hundred",
+  "600": "Six Hundred",
+  "700": "Seven Hundred",
+  "800": "Eight Hundred",
+  "900": "Nine Hundred",
+  "0000": "Thousand",
+  "000000": "Million",
+  "+000000": "Millions"
 }
