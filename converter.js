@@ -1,57 +1,72 @@
 const ptNumbers = require('./lang/pt-numbers.json');
 const enNumbers = require('./lang/en-numbers.json');
 
-const language = {
-  portuguese: 'pt',
-  english: 'en',
-};
-
 const chooseLanguage = {
   pt: ptNumbers,
   en: enNumbers,
 };
 
-const convertToExt = (number = 0, lang = 'pt') => {
-  if (typeof Number(number) === 'number') {
-    let numberLang = chooseLanguage[lang];
+const NO_SOLUCTION = '--';
 
-    if (numberLang[number]) return numberLang[number];
-    if (number < 100) {
-      const rest = number % 10;
-      const numberMinusRest = number - rest;
+const getE = (lang) => (lang === 'pt' ? ' e ' : ' ');
 
-      return rest === 0
-        ? numberLang[numberMinusRest]
-        : `${numberLang[numberMinusRest]} e ${convertToExt(rest)}`;
-    }
+const convertToLiteral = (number, lang) => {
+  if (lang !== 'pt' && lang !== 'en')
+    throw new Error('This language is not supported yet');
+  if (typeof number !== 'number') throw new Error('You must provide a number');
 
-    if (number < 1000) {
-      const rest = number % 100;
-      const numberMinusRest = number - rest;
-      return rest === 0
-        ? numberLang[numberMinusRest]
-        : `${numberLang[numberMinusRest]} e ${convertToExt(rest)}`;
-    }
+  const words = chooseLanguage[lang];
 
-    if (number < 1000000) {
-      const rest = number % 1000;
-      const result = Math.trunc(number / 1000);
+  if (number <= 20) return words[number].toLowerCase();
 
-      if (rest === 0) return result === 1 ? 'Mil' : convertToExt(result);
-      return (
-        (result === 1 ? 'Mil' : convertToExt(result) + ' MIL') +
-        ' e ' +
-        convertToExt(rest)
-      );
-    }
-    if (number === 1000000) return ptNumbers[1000000];
+  if (number <= 99) {
+    const firstDigit = Math.trunc(number / 10);
+    const rest = convertToLiteral(number % 10, lang);
+
+    return `${words[firstDigit + '0'].toLowerCase()}${
+      rest !== words['0'].toLowerCase() ? `${getE(lang)}${rest}` : ''
+    }`;
   }
 
-  return lang === chooseLanguage[language.portuguese]
-    ? `${number} não é um número.`
-    : `${number} is not a number.`;
+  if (number % 100 === 0 && number % 1000 !== 0)
+    return words[number].toLowerCase();
+
+  if (number <= 999) {
+    const firstDigit = Math.trunc(number / 100);
+    const rest = convertToLiteral(number % 100, lang);
+
+    return `${words[firstDigit + '00'].toLowerCase()}${
+      rest !== words['0'].toLowerCase() ? `${getE(lang)}${rest}` : ''
+    }`;
+  }
+
+  if (number <= 999999) {
+    const firstDigit = Math.trunc(number / 1000);
+    const rest = convertToLiteral(number % 1000, lang);
+
+    return `${
+      firstDigit === 1
+        ? words['0000'].toLowerCase()
+        : `${convertToLiteral(firstDigit, lang)} ${words['0000'].toLowerCase()}`
+    }${rest !== words['0'].toLowerCase() ? `${getE(lang)}${rest}` : ''}`;
+  }
+
+  if (number <= 999999999) {
+    const firstDigit = Math.trunc(number / 1000000);
+    const rest = convertToLiteral(number % 1000000, lang);
+
+    return `${
+      firstDigit === 1
+        ? words['000000'].toLowerCase()
+        : `${convertToLiteral(firstDigit, lang)} ${words[
+            `${firstDigit === 1 ? '' : '+'}000000`
+          ].toLowerCase()}`
+    }${rest !== words['0'].toLowerCase() ? `${getE(lang)}${rest}` : ''}`;
+  }
+
+  return NO_SOLUCTION;
 };
 
-console.log(convertToExt(1001, 'pt'));
+console.log(convertToLiteral(23647234, 'pt'));
 
-module.exports = convertToExt;
+module.exports = convertToLiteral;
