@@ -6,8 +6,6 @@ const chooseLanguage = {
   en: enNumbers,
 };
 
-const NO_SOLUTION = '--';
-
 const setNumber = (number) => {
   let num = 0;
 
@@ -48,7 +46,5 @@ const convertToLiteral = (number, lang) => {
   res = parseInt(number / divider) * divider;
   return `${words[res]} and ${convertToLiteral(number % divider, lang)}`;
 };
-
-console.log(convertToLiteral(1111111, 'en'));
 
 module.exports = convertToLiteral;
